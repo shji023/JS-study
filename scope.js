@@ -21,7 +21,6 @@ var list = document.querySelectorAll("li");
 for (var i=0; i<list.length; i++){
     list[i].addEventListener("click", function(){
         console.log(i+"번째 리스트 입니다"); // i 값은 콜백 밖에 있는 변수 값을 참조, i는 closure 변수
-
     });         
 }
 //closure 때문에 '4번째 리스트 입니다' 만 출력되는 문제
@@ -53,6 +52,7 @@ function home(){
     //변경이 될 수 있는 변수는 let을 사용
     //var는 사용하지 않는다.
 }
+
 home();
 
 //const특성과 immutable array
