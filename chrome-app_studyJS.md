@@ -160,3 +160,24 @@ title.onmouseenter = handleMouseEnter;
 
 //mouseleave, resize, copy, offline, online 등 여러 이벤트 많음
 ```
+
+## classList
+명시한 class가 HTML elemet class에 포함되어있는지 알려줌
+```
+function handleTitleClick(){
+  const clickedClass = "clicked";
+  if(title.classList.contains(clickedClass)){
+    title.classList.remove(clickedClass);
+  } else {
+    title.classList.add(clickedClass);
+  }
+}
+//토글 기능을 구현한 것과 마찬가지
+//same as
+function handleTitleClick(){
+  title.classList.toggle("clicked");
+}
+title.addEventListener("click", handleTitleClick);
+```
+클래스 네임을 아예 교체하지 않고 classList를 활용하여 목록에서 추가 제거함<br />
+처음에 설정한 클래스 이름을 지우지 않고 유지할 수 있음
