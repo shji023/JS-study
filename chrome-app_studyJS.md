@@ -157,4 +157,6 @@ function handleMouseEnter(){
 title.addEventListener("mouseenter", handleMouseEnter);
 //same as
 title.onmouseenter = handleMouseEnter;
+
+//mouseleave, resize, copy, offline, online 등 여러 이벤트 많음
 ```
