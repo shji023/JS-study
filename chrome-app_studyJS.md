@@ -136,3 +136,25 @@ player.sayHello("nana");
   ```
 - document.querySelectorAll <br />
   위의 예시결과 > NodeList(3) [h1, h1, h1]
+
+## Events
+```
+const title = document.querySelector("div.hello:first-child h1");
+
+function handleTitleClick(){
+  console.log("title was clicked")
+}
+title.addEventListener("click", handleTitleClick);
+```
+click 이벤트가 발생하면 두번째 인자인 함수가 실행이 됨
+
+property 이름에 on이 들어있다면 event listener
+- onclick, onchange, oncopy ... 
+```
+function handleMouseEnter(){
+  console.log("mouse enter")
+}
+title.addEventListener("mouseenter", handleMouseEnter);
+//same as
+title.onmouseenter = handleMouseEnter;
+```
