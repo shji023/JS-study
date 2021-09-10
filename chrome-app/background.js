@@ -1,4 +1,4 @@
-const iamges = ["bg1.jpg", "bg2.jpg", "bg3.jpg", "bg4.jpg", "bg5.jpg"];
+const iamges = ["bg1.jpg", "bg2.jpg", "bg3.jpg"];
 const randomImage = iamges[Math.floor(Math.random() * iamges.length)];
 
 const background = document.createElement("img");

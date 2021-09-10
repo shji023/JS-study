@@ -1,3 +1,56 @@
+body {
+  margin-left: 30px;
+}
 .hidden {
   display: none;
+}
+#clock {
+  font-size: 100px;
+  color: white;
+  font-weight: bold;
+  margin: 0;
+}
+#calendar {
+  font-size: 30px;
+  color: gray;
+  font-weight: bold;
+  margin: 0;
+}
+#novel {
+  font-size: 20px;
+  color: #3e3e3e;
+  font-weight: 500;
+  position: absolute;
+  font-weight: bold;
+  bottom: 50px;
+}
+#login input[type="text"] {
+  width: 500px;
+  height: 50px;
+  border-radius: 10px;
+  border: 3px solid white;
+  margin-top: 20px;
+  font-size: large;
+}
+#login input[type="submit"] {
+  width: 100px;
+  height: 60px;
+  border-radius: 10px;
+  border: none;
+  color: lightcoral;
+  font-size: large;
+  font-weight: bold;
+}
+#greeting {
+  font-size: 50px;
+  color: #3e3e3e;
+  font-weight: bold;
+}
+img {
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
