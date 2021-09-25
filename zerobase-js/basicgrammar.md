@@ -65,8 +65,44 @@ let name = "candy";
 ## 자료형
 - 목적에 따라 특별한 성질이나 정해진 범주를 갖고 있는
 - JS는 6가지의 원시 타입 자료형과 1가지의 객체 타입 자료형으로 구성
-  |제목|내용|설명|
-|------|---|---|
-|테스트1|테스트2|테스트3|
-|테스트1|테스트2|테스트3|
-|테스트1|테스트2|테스트3|
+<table>
+  <thead>
+      <tr>
+          <th>구분</th>
+          <td>데이터 타입</td>
+          <td>설명</td>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td rowspan="6">원시 타입(primitive type)</td>
+        <td>Boolean</td>
+        <td>true, false</td>
+      </tr>
+      <tr>
+        <td>null</td>
+        <td>존재하지 않거나 유효하지 않은 주소 표시</td>
+      </tr>
+      <tr>
+        <td>undefined</td>
+        <td>선언 후 값을 할당하지 않은 변수</td>
+      </tr>
+      <tr>
+        <td>number</td>
+        <td>정수, 실수 등의 숫자</td>
+      </tr>
+      <tr>
+        <td>string</td>
+        <td>빈 문자열이나 글자들을 표현하는 문자열</td>
+      </tr>
+      <tr>
+        <td>symbol</td>
+        <td>문자열과 함께 객체 property로 사용, ES6에 추가</td>
+      </tr>
+      <tr>
+        <td>객체 타입(ojbect type)</td>
+        <td>object</td>
+        <td>두개 이상의 복잡한 개체 저장 가능</td>
+      </tr>
+  </tbody>
+</table>
