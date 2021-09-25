@@ -106,3 +106,48 @@ let name = "candy";
       </tr>
   </tbody>
 </table>
+
+## 원시타입
+### typeof
+- 인수의 자료형을 반환하는 연산자
+- 연산자인 typeof x와 함수인 typeof(x)로 문법 지원
+
+### boolean
+- boolean은 논리적인 값을 표현하는 자료형
+- true, false
+- 조건문 등에서 동작 판단의 기준으로 사용
+
+### null
+- 값이 비어있다는 의미
+- nothing, empty, unknown 
+
+### undefined
+- 값이 할당되어 있지 않은 상태
+- 변수 선언 후 초기화 하지 않았을 경우
+
+### number
+- 정수, 부동소수점 숫자를 표현함
+- 사칙연산
+- infinity, -infinity, NaN 특수 숫자 값 포함
+- bigint 아주 큰 자료형 필요 시
+
+### string
+- 문자, 문자열 표현
+- 큰 따옴표, 작은 따옴표, 백틱
+
+## 객체 타입
+### object
+- 다수의 원시 자료형을 포함하거나 복잡한 개체를 표현할 수 있음
+- Object() 혹은 {}를 통해 생성
+- key:value 형태, object.key로 접근
+- 추가 - obj.key = value, 삭제 - delete
+- 객체 복사 문제 
+  ```
+  let user = {
+    name:"jy",
+    age:25,
+  }
+  let admin = user; //객체 복사
+  admin.name = "hyun";
+  console.log(user.name);//hyun - 문제 발생
+  ```
