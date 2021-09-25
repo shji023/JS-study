@@ -69,8 +69,8 @@ let name = "candy";
   <thead>
       <tr>
           <th>구분</th>
-          <td>데이터 타입</td>
-          <td>설명</td>
+          <th>데이터 타입</th>
+          <th>설명</th>
       </tr>
   </thead>
   <tbody>
