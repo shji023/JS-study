@@ -151,3 +151,152 @@ let name = "candy";
   admin.name = "hyun";
   console.log(user.name);//hyun - 문제 발생
   ```
+  - object의 값을 복사할 때는 대상 전체가 아닌 object내 주소 값만 복사되는 문제
+    - 주소값이 같으니 같은 공간을 가르키게됨
+  - 가리키는 대상 전체를 복사하기 위해서는  <b>얕은 복사, 깊은 복사 </b> 통해 가능
+
+### 얕은 복사
+```
+let user = {
+  name:"jy",
+  age:25,
+}
+
+// for 반복문
+let admin = {};
+
+for (let key in user) {
+  admin[key] = user[key];
+}
+
+// Object함수 이용
+let admin = Object.assign({},user);
+
+// Spread Operator
+let admin = {...user}; // {user.name, user.age}
+```
+- 객체안의 객체는 복사 되지 않음
+
+### 깊은 복사
+```
+let user = {
+  name:"jy",
+  age:25,
+  sizes: {
+    height: 180,
+    weight: 70,
+  },
+};
+
+// stringfy: js object -> string, parse: string -> js object
+let admin_json = JSON.parse(JSON.stringfy(user));
+
+```
+- .JSON 객체를 이용한 깊은 복사, stringfy는 객체를 문자열로 변환하는데 이때 원본 객체와의 참조가 끊김
+
+## 형 변환
+- 자바스크립트는 느슨한 타입 언어, 동적 타입 언어 - 변수의 <b>자료형을 명시적으로 선언할 필요가 없음</b>
+- 연산자로 인한 계산이나 변수에 전달되는 값은 자동으로 <b>암묵적</b> 형 변환 수행
+- 강제적 형 변환을 위해서는 자료형 함수를 이용해 <b>명시적</b>형 변환 수행
+  
+### String
+```
+String(123) // 123
+String(1/0) // Infinity
+String(NaN) // NaN
+String(undefined) //undefined
+String(null) //null
+```
+### Number
+- Number는 정수와 실수를 모두 포함하는 자료 형 변환이므로, 정수 혹은 실수의 명시적 변환은 parse함수 이용
+- 정수변환 : parseInt(피연산자), 실수 변환: parseFloat(피연산자)
+```
+Number("") // 0
+Number("123") // 123
+Number("hello") // NaN
+Number(true) // 1
+Number(null) // 0
+Number(undefined) // NaN
+
+pareseInt("123.456") // 123
+parseFloat("123.456") // 123.456
+```
+
+### Boolean
+```
+Boolean("") // false
+Boolean("123") // true
+Boolean("hello") // true
+Boolean(123) // true
+Boolean(NaN) // false
+Boolean(null) // false
+Boolean(undefined) // false
+```
+
+## 연산자
+- 프로그램에서 데이터를 처리하여 결과를 산출할 목적으로 사용
+- 연산되는 대상은 피연산자, 피연산자의 갯수에 따라 단항/이항/삼항 연산자 종류 존재
+### 단항 연산자
+- 부호 연산자 +, -
+- 증감 연산자 ++, --
+- 논리 연산자 !(NOT)
+- 비트 연산자 ~
+  
+### 이항 연산자
+- 산술 연산자 +, -, *, /, %, **
+- 대입 연산자 =, +=, -=
+- 비교 연산자 ==, !=, ===
+  - == 은 단순 값의 같음을 비교하는 동등 비교, === 는 자료형까지 같음을 판단하는 일치 비교
+  ```
+  1 == '1' // true
+  1 === '1' // false
+  "z">"a" //true 알파벳 뒤에 있으면 큰거
+  "hello" < "hello" // true 문자 똑같은데 같은데 길면 긴게 큰거
+  ```
+- 논리 연산자 && (AND), || (OR)
+
+### 삼항 연산자
+```
+(조건식)? 참일 경우의 식: 거짓일 경우의 식
+```
+
+## Scope
+- 변수 혹은 상수에 접근할 수 있는 범위
+- 모듈 / 함수 내 코드에서 동일한 변수 사용시 간섭을 줄이는 용도로 사용
+- Global Scope, Local Scope의 타입으로 구분
+  - Global Scope: 전역에 선언되어 어디에서도 접근 가능
+  - Local Scope(block, function level scope): 특정 지역에 선언되어, 해당 지역 내에서만 접근 가능
+```
+//global 레벨
+let index = 100;
+
+//function 레벨
+function example(){
+  let index = 10;
+
+  //블록레벨
+  for (let index=0; index<10; index++){
+    console.log(index); // 0 ~ 9
+  }
+  console.log(index); // 10
+}
+ 
+example();
+console.log(index); //100
+
+```
+
+## 조건문
+### if-else
+- 알고리즘에서 논리적 비교할 때 사용되는 조건식
+- if, if else, else키워드를 통해 구성되며, 조건식에 맞을 경우 중괄호 {} 내에 있는 명령문 수행
+- 단일 문장을 실행할 경우 {} 생략 가능
+
+### 3항 연산자
+- if-else 대체 가능
+- 변수 = (조건식) ? 참일 경우의 식 : 거짓일 경우의 식
+
+### switch
+- switch는 표현식을 평가하여 그 값이 일치하는 case문을 실행하는 조건문
+- switch, case, break, default를 통해 구성, switch의 조건에 맞는 case구문 수행
+- 하나의 case만 수행 되도록 case끝엔 break 사용하기
