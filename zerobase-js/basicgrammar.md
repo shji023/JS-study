@@ -300,3 +300,269 @@ console.log(index); //100
 - switch는 표현식을 평가하여 그 값이 일치하는 case문을 실행하는 조건문
 - switch, case, break, default를 통해 구성, switch의 조건에 맞는 case구문 수행
 - 하나의 case만 수행 되도록 case끝엔 break 사용하기
+
+## 반복문
+### for
+- for(선언문; 조건문; 증감문){  } 형태
+- 조건문이 fail이 되기 전까지 코드 블록을 계속적으로 반복 수행
+- 선언문, 조건문, 증감문 자리에 공백 입력 가능
+- 선언문 조건문 증감문 분리
+  ```
+  let num = 0;
+  for(; num < 2; ){
+    console.log(num);
+    num++;
+  }
+  ```
+### for ..in
+- 객체의 key, value형태를 반복하여 수행하는데 최적화
+- 첫번째 부터 마지막까지, 객체의 키 개수 만큼 반복
+```
+const person = {
+  fname:"jy",
+  lname:"h",
+  age: 25,
+};
+let text = "";
+for (let x in person) {
+  text+=person[x];
+}
+console.log(text); // hjy25
+```
+
+### for..of
+- Collection 객체 자체가 Symbol.iterator 속성(property)을 가지고 있어야 동작 가능
+- ES6에 새로 추가된 Collection 기반 반복 구문
+```
+let language = "javascript";
+let text = "";
+for (let x of language) {
+  text += x;
+}
+console.log(text); // j \n a \n ... t
+```
+
+### while
+- 조건문이 참일 때 코드블록을 계속해서 반복 수행하는 반복문
+- 선언문과 증감문 없이 loop수행, 무한 loop 수행 시 많이 사용
+- 조건문을 코드 블록보다 아래로 옮긴 do ... while반복문도 존재(최초 한번 수행(do에서)이 필요할 때)
+
+### 제어
+<b>break</b>
+- 반복문 수행 시 코드 블록을 탈출할 때 사용
+- 다중 반복문일 경우 가장 안쪽의 반복문을 종료
+- Label을 통하여 다중 반복문을 한번에 종료 가능
+  - Label : 반복문 앞에 콜론과 함께 쓰이는 식별자
+    - 프로그램 내 특정 영역을 지정하여 별도 이름을 붙이는 식별자
+    - break와 continue를 사용하는 반복문 안에서만 사용 가능하면, break나 continue 지시자 위에 있어야함
+    ```
+    end: for(let i=0; i<3; i++) {
+      for(let j=0; j<3; j++) {
+        console.log(i);
+      }
+      break end;
+    } 
+    ```
+
+<b>continue</b>
+- 반복문 수행 시 코드 블록 실행을 해당 라인에서 중지하고 블록 코드를 종료 시킨 후 반복문 내 명시된 조건 판단
+
+## 함수
+- 다수의 명령문을 코드블록으로 감쌈. 하나의 실행 단위로 만든 코드의 집합
+- 유사한 동작을 하는 코드를 하나로 묶어, 범용성을 확대시킨 블록 코드
+- 정의 부분과 호출 부분으로 구성
+- 가급적 한가지 일만 하며, 매개 변수는 최대 3개 이내 작성 권장
+
+### 함수 선언식
+```
+function add (x, y) {
+  return x + y;
+}
+```
+### 함수 표현식
+```
+const add = function (x, y) {
+  return x + y;
+}
+```
+
+### 화살표 함수 
+```
+const add = (x, y) => x + y;
+```
+
+### 호출
+- 자바스크립트 함수는 매개변수와 인수의 개수가 일치하는지 확인하지 않음
+- ES6에서 도입된 기본값을 통해 undefined 변수가 들어올 경우 값 초기화 지정 가능
+```
+// default 값
+function add(x, y=10) {
+  console.log(x + y);
+}
+add(10, 20, 30); // 30
+add(10, 20); // 30
+add(10); // 20
+add(); // NaN
+
+// dynamic parameters
+function min() {
+  console.log(arguments[0]-arguments[1]);
+}
+min(10, 20, 30); // -10
+min(10, 20); // -10
+min(10); // NaN
+min(); // NaN
+```
+
+### 반환
+- return 후 코드는 수행되지 않음. default return value는 undefined
+```
+function dummy() {}
+console.log(dummy()); // undefined
+```
+
+### 재귀함수
+- 함수 스스로 자신을 참조해 호출 하면서 동일한 코드가 계속적으로 수행되는 함수 호출 방법
+- 특정 조건이 됐을 때 자신을 그만 호출되도록 제한하는 exit code 필요
+```
+function recur(num) {
+  if(num == 0) return;
+  recur(num - 1);
+}
+return(3)
+
+function factorial(num) {
+  if(num == 0) return 1;
+  return num * factorial(num - 1);
+}
+```
+
+### 콜백함수
+- 다른 함수의 매개변수로 전달되어 수행되어지는 함수
+- 고차함수란 매개변수를 통해 함수를 받아 호출되는 함수
+```
+function callback_func() {
+  console.log("this is callback function");
+}
+fuction higher(callback) {
+  console.log("this is higher function");
+  callback();
+}
+higher(callback_func);
+
+//예제
+function add(x,y) {
+  return x+y;
+}
+function sub(x,y) {
+  return x-y;
+}
+function mul(x,y) {
+  return x*y;
+}
+function div(x,y) {
+  return x/y;
+}
+function calculator(callback, x, y) {
+  return callback(x, y);
+}
+calculator(add, 7, 3);
+calculator(sub, 7, 3);
+calculator(mul, 7, 3);
+calculator(div, 8, 2);
+```
+
+### call by*
+<b>call by value</b>
+- 값에 의한 복사로 함수 내에서 매개 변수 값을 변경 시켜도 영향이 미치지 않음
+- 원시 타입을 매개 변수로 넘겼을 때 발생
+```
+let a = 1;
+let add = function (b) {
+  b = b+1;
+}
+add(a);
+console.log(a); //2
+```
+<b>call by reference</b>
+- 주소에 대한 복사로 함수 내에서 매개 변수 내 값을 변경시키면 원본 데이터에도 영향을 받음
+- 객체 타입(object type)을 매개 변수로 넘겼을 때 발생
+```
+var a = {v:1};
+let add = function (b) {
+  b.v = b.v+1;
+}
+add(a);
+console.log(a.v); //2
+```
+
+### 함수 저장
+- 배열의 요소 혹은 객체의 속성에 함수 정의 하여 저장 가능 
+```
+let list = ["jy", 25, function hello_func() {console.log("hello")}];
+let obj = {
+  name:"jy",
+  age: 25,
+  hello_func() {
+    console.log("hello");
+  }
+}
+function hello_func() {console.log("hello");}
+```
+
+### method
+- 객체에 저장된 값이 함수인 경우. 위의 예시에서 obj의 hello_func
+- 객체 내 초기 선언된 함수를 다른 함수로 변경 가능
+
+### this
+- 메서드에서 객체 내부의 속성값을 접근할 수 있는 지시자
+```
+let obj = {
+  name:"jy",
+  age: 25,
+  hello_func() {
+    console.log("hello" + this.name);
+  }
+}
+
+let user = {name:"jy"};
+let admin = {name:"admin"};
+function hello_func() {
+  console.log("hello" + this.name);
+}
+user.func = hello_func;
+admin.func = hello_func;
+
+user.func();
+admin.func();
+
+//객체접근 다른방법
+user["func"]();
+admin["func"]();
+```
+
+## Number
+### 지수/진법
+<b>지수 표기법</b>
+- 아주 큰 숫자나 아주 작은 숫자를 표기하게 위해 지수 표기법(e)로 0의 개수를 대체 표기 가능
+```
+let billion_1 = 1000000000;
+let billion_2 = 1e9;
+let us = le-6; // 0.000001, 왼쪽으로 6번 소수점 이동
+```
+
+<b>진법 표기</b>
+- 진법 표기를 지원하게 위해 0x(16진수), 0o(8진수), 0b(2진수)로 N진수 표기 가능
+```
+0x0f // 15
+0o17 // 15
+0b1111 //15
+```
+
+### 대표 메서드
+<b>형 변환</b>
+- Number to String: Number.toString(), String(Number), Number+""
+  
+<b>자리 수 표현</b>
+- 소수의 자리 수 길이를 제한: Number.toFixed(pos)
+- 정수와 소수의 자리 수를 합한 길이로 제한: Number.toPrecision(pos);
