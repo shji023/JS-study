@@ -711,6 +711,7 @@ fruits // ["apple","banana","kiwi","mango"];
 <b>정렬</b>
 - 내림차순 정렬: Array.reverse()
 - 오름차순 정렬: Array.sort()
+
 <b>변환</b>
 - 문자열로 변환: Array.join(seperator)
 ```
