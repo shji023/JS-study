@@ -566,3 +566,159 @@ let us = le-6; // 0.000001, 왼쪽으로 6번 소수점 이동
 <b>자리 수 표현</b>
 - 소수의 자리 수 길이를 제한: Number.toFixed(pos)
 - 정수와 소수의 자리 수를 합한 길이로 제한: Number.toPrecision(pos);
+
+<b>자료형 확인</b>
+- 부동 소수점 산술에서 정의되지 않거나 표현할 수 없는 값(NaN)인지 확인: Number.isNaN()
+- 정상적인 유한 수 인지 확인: Number.isFinite()
+
+<b>정수와 실수형 변환</b>
+- 정수로 변환하는 방법 (N진수로 명시적 변환도 가능): Number.parseInt()
+- 실수로 변환하는 방법: Number.parseFloat()
+```
+Number.parseInt("125px"); // 125 -> 단위도 변환가능!
+== parseInt("125px");
+Number.parseInt("1.25em"); // 1.25 -> 단위도 변환가능!
+```
+
+## String
+- 자바스크립트에서는 글자 하나만 저장할 수 있는 char자료형이 없음
+- 페이지 인코딩 방식과 상관없이 항상 UTF-16 형식을 따름
+```
+console.log("줄\n바꿈"); //줄 <줄바꿈> 바꿈
+console.log("줄\r바꿈"); //줄 <줄바꿈> 바꿈
+console.log("\\슬래시"); // \슬래시
+console.log("탭\t탭"); // 탭  탭
+console.log("유니\u{1F60D}코드"); // 유니😍코드
+```
+### 길이 
+- String.length (개행문자도 길이 취급)
+### 접근
+- String.charAt(index), String.charCodeAt(index) - 아스키코드 값 출력, String[index]
+### 검색
+- 문자열 검색(index): String.indexOf(substr, pos), String.lastIndexOf(substr, pos)
+- 문자열 검색(bool): String.includes(substr, pos), String.startsWith(substr, pos), String.endsWith(substr, pos)
+### 대소문자 변환
+- str.toUpperCase()
+- str.toLowerCase()
+### 치환 
+- 처음 만나는 요소 문자열 치환: String.replace(원래 문자열, 바꿀 문자열)
+- 정규 표현식 활용 문자열 치환: 치환 문자열에 정규표현식 기입 -> /치환문자열/g(전체)i(대소문자 구분X)
+  - 코딩테스트에서는 허용x
+```
+let text = "helLo, world";
+console.log(text.replace(/l/g, "i")); // heiLo, worid!!!
+console.log(text.replace(/l/gi, "i")); // heiio, worid!!!
+```
+### 추출
+- 위치 기반
+  - String.slice(start, end)
+  - String.substring(start, end) : end > start => start > end
+  ```
+  let text = "hello, world";
+  console.log(text.slice(2, 6)); // llo,
+  console.log(text.slice(6, 2)); //
+  console.log(text.substring(2, 6)); // llo,
+  console.log(text.substring(6, 2)); // llo,
+  ```
+- 길이 기반: String.substr(start, length)
+
+### 분할
+- 배열로 문자열 분할: String.split(Separator, limit)
+```
+let fruits = "apple strawberry peach"
+result = fruits.split(" "); // ['apple','strawberry,'peach']
+let text = "apple"
+result = fruits.split(""); // ['a','p,'p','l','e']
+```
+
+## 배열
+- 여러 개체(Entity)값을 순차적으로 나열한 자료구조
+- property, method
+
+### 선언/접근/속성
+- 선언: new Array() or [], 사이즈 혹은 값을 입력하여 초기화도 가능
+- 접근: Array[index]
+- 속성: Array.length
+
+### 배열의 실체
+- 자바스크립트에서 배열은 Hash 기반의 객체
+- 메모리가 연속적인 밀집 배열가 아닌 비 연속적인 희소 배열
+```
+let numbers = [];
+numbers.push("one");
+numbers.push("two");
+console.log(numbers.length); // 2
+console.log(numbers) // ['one', 'two']
+
+numbers["once"] = "once";
+numbers["twice"] = "twice";
+console.log(numbers.length); // 2
+console.log(numbers) // ['one', 'two', once:'once', twice:'twice']
+Object.getOwnPropertyDescriptors(numbers); //희소배열이구나
+```
+### 타입확인 및 요소 삭제 
+- 타입확인: Array.isArray(value)
+- 요소삭제: delete array[index]
+  - 삭제해도 배열 사이즈가 그대로인 문제 발생
+
+### 배열 조작
+<b>추가/삭제 Back</b>
+- Array.push(element)
+- Array.pop()
+
+<b>추가/삭제 Front</b>
+- 추가: Array.unshift(element)
+- 삭제: Array.shift() 
+
+<b>삭제/변경(index)</b>
+- Array.splice(index[,deleteCount, elem1, ..., elemN])
+```
+let fruits = ["apple","strawberry","peach"];
+fruit.splice(1) // ["strawberry","peach"];
+fruits // ["apple"]
+
+fruits = ["apple","strawberry","peach","mango"];
+fruit.splice(1,1) // ["strawberry"];
+fruits // ["apple","peach","mango"];
+
+fruit.splice(1,1,"banana","kiwi") // ["peach"];
+fruits // ["apple","banana","kiwi","mango"];
+```
+
+<b>삭제(index)</b>
+- Array.slice([start],[end])
+  
+<b>병합</b>
+- Array.concat(arg1, arg2...)
+
+### 반복문
+- 반복문 문법: for ...length(index 접근), for ...of(element 접근), for ...in(key 접근)
+  ```
+  for (let x of arr) {
+    console.log(x)
+  }
+  for (let key in arr) {
+    console.log(arr[key])
+  }
+  ```
+
+### 탐색
+- index 탐색(앞에서부터): Array.indexOf(item, from)
+- index 탐색(뒤에서부터): Array.lastIndexOf(item, from)
+- 값 포함 여부 확인: Array.includes(item, from)
+
+### 변형
+<b>정렬</b>
+- 내림차순 정렬: Array.reverse()
+- 오름차순 정렬: Array.sort()
+<b>변환</b>
+- 문자열로 변환: Array.join(seperator)
+```
+let fruits = ["apple","strawberry","peach"];
+let str = fruits.join();
+str // apple,strawberry,peach
+```
+
+## 고차함수
+- 하나 이상의 함수를 매개변수로 취하거나 함수를 결과로 반환하는 함수
+- 매개변수로 전달되는 함수는 callback 함수
