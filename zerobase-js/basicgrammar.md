@@ -723,3 +723,39 @@ str // apple,strawberry,peach
 ## 고차함수
 - 하나 이상의 함수를 매개변수로 취하거나 함수를 결과로 반환하는 함수
 - 매개변수로 전달되는 함수는 callback 함수
+
+### sort()
+- 기존 sort()에 문제점이 있음: 일의 자리 4가 10의 자리보다 뒤쪽에 정렬
+- 원인: sort 메서드로 정렬될 때 배열의 요소가 일시저긍로 문자열로 변경되기 때문
+```
+let nums = [1, -1, 4, 0, 2, 3, 10, 20, 12];
+console.log(nums.sort()); //
+[
+  -1,  0, 1, 10, 12,
+   2, 20, 3,  4
+]
+console.log(nums.reverse()); //
+[
+  12, 20, 10, 3, 2,
+   0,  4, -1, 1
+]
+```
+- 한계: 대소문자 구분없이 정렬하고 싶지만, 대소문자 구분되어 정렬
+```
+let nums = ["One", "one", "two", "three"];
+console.log(nums.sort()); // [ 'One', 'one', 'three', 'two' ]
+console.log(nums.reverse()); // [ 'three', 'two', 'one', 'One' ]
+```
+1. sort() 함수의 매개변수로 함수를 넣어 고차함수를 이용한 정렬 수행 가능
+```
+let ascend = function(x, y) {return x-y};
+let desscend = function(x, y) {return y-x};
+console.log(nums.sort(ascend)); // [
+  -1,  0,  1,  2, 3,
+   4, 10, 12, 20
+]
+console.log(nums.sort(desscend)); // [
+  20, 12, 10,  4, 3,
+   2,  1,  0, -1
+]
+```
