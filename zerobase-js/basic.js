@@ -50,3 +50,10 @@ function Max(x, y) {
   return result;
   //return x > y ? x : y;
 }
+
+let date_params_1 = new Date(2021, 0, 1);
+let date_params_2 = new Date(Date.UTC(2021, 0, 1, 6, 12, 18, 24));
+let date_params_3 = new Date(Date.UTC(2021, 0, 1));
+console.log(date_params_1);
+console.log(date_params_2);
+console.log(date_params_3);

@@ -672,6 +672,7 @@ Object.getOwnPropertyDescriptors(numbers); //희소배열이구나
 
 <b>삭제/변경(index)</b>
 - Array.splice(index[,deleteCount, elem1, ..., elemN])
+
 ```
 let fruits = ["apple","strawberry","peach"];
 fruit.splice(1) // ["strawberry","peach"];
@@ -759,3 +760,319 @@ console.log(nums.sort(desscend)); // [
    2,  1,  0, -1
 ]
 ```
+2. 대소문자 한계 해결
+```
+let ascend = function(x, y) {
+  x = x.toUpperCase();
+  y = y.toUpperCase();
+  if(x > y) return 1;
+  else if (y > x) return -1;
+  else return 0;
+}
+
+let descend = function(x, y) {
+  x = x.toUpperCase();
+  y = y.toUpperCase();
+  if(x < y) return 1;
+  else if (y < x) return -1;
+  else return 0;
+}
+
+let fruits = ["apple","Orange","orange","melon"];
+fruits.sort(ascend); // ["apple","melon","Orange","orange"]
+fruits.sort(descend); // ["Orange","orange","melon","apple"]
+```
+3. 콜백함수 ascend, descend 공용화
+```
+let ascend = function(x, y) {
+  if (typeof x === "string") x = x.toUpperCase();
+  if (typeof y === "string") y = y.toUpperCase();
+  return x > y ? 1 : -1 ;
+}
+
+let descend = function(x, y) {
+  if (typeof x === "string") x = x.toUpperCase();
+  if (typeof y === "string") y = y.toUpperCase();
+  return x < y ? 1 : -1 ;
+}
+
+let nums = [1, -2, 4, 0, 10, 20, 12];
+nums.sort(ascend); //[
+  -1,  0,  1, 4,
+  10, 12, 20
+]
+nums.sort(descend); //[
+  20, 12, 10, 4,
+   1,  0, -1
+]
+
+let fruits = ["apple","Orange","orange","melon"];
+fruits.sort(ascend); // ["apple","melon","orange","Orange"]
+fruits.sort(descend); // ["Orange","orange","melon","apple"]
+```
+
+### forEach()
+- 배열 요소 별 콜백 함수 각각에 실행: Array.forEach(function(배열 요소, 배열 위치, 배열){})
+```
+let nums = [1, 2, 3];
+nums.forEach(function(i){
+  console.log(i);
+}) 
+```
+
+### map()
+- 배열 요소 별 함수 호출 및 결과를 배열로 반환: Array.map(function(배열 요소, 배열 위치, 배열){})
+```
+let nums = [1, 2, 3, 4, 5];
+let use_map = nums.map(function(item){
+  return item * 2;
+})
+use_map // 2, 4, 6, 8, 10
+```
+
+### find()  
+- 콜백 함수의 조건을 만족하는, 단 하나의 값만 반환: Array.find(function(배열 요소,배열 위치, 배열){})
+```
+let users = [
+  { name:'bob',age:15, job:false },
+  { name:'jane',age:25, job:false },
+  { name:'victoria',age:35, job:true },
+]
+let find_job = user.find(function (user){
+  return user.job == false;
+})
+find_job // { name:'bob',age:15, job:false }
+```
+
+### filter()
+- 콜백 함수의 조건을 만족하는 값을 배열로 반환: Array.filter(function(배열 요소,배열 위치, 배열){})
+```
+let find_job = user.filter(function (user){
+  return user.job == false;
+})
+find_job // [{ name:'bob',age:15, job:false },{ name:'jane',age:25, job:false }]
+```
+
+### reduce()
+- 요소 별 함수 수행 누적 결과값 반환: Array.reduce(function(accumulator,배열 요소,배열 위치, 배열){})
+```
+let nums = [1, 2, 3, 4, 5];
+let call_count = 0;
+
+console.log("result\tvalue\tindex");
+let sum = nums.reduce(function(accumulator, item, index, array){
+  console.log(accumulator, "\t\t", item, "\t\t", index);
+  call_count++;
+  return accumulator + item;
+},0);
+// output
+result	value	index
+0 		 1 		 0
+1 		 2 		 1
+3 		 3 		 2
+6 		 4 		 3
+10 		 5 		 4
+call_count // 4
+sum // 15
+```
+
+## 생성자
+- 유사한 객체를 다중으로 만들 때 사용되는 함수(타 언어에서 class라고 보면됨)
+- 생성자 함수의 첫 글자는 대문자로 시작
+- 생성자 함수로 객체 생성 시 new 연산자를 통해 객체 생성
+```
+//붕어빵 틀
+function FishBread(flavor, price) {
+  this.flavor = flavor;
+  this.price = price;
+  this.base = "flour";
+}
+//개별 붕어빵
+let bread_1 = new FishBread("cream", 1200); // FishBread {flavor:'cream',price:1200, base:'flour'} 
+let bread_2 = new FishBread("redbean", 1000); // FishBread {flavor:'redbean',price:1000, base:'flour'}
+let bread_3 = new FishBread("milk", 1500); // FishBread {flavor:'milk',price:1500, base:'flour'}
+```
+### new.target 
+- new가 없을 때 new를 자동으로 붙여주는 스마트한 생성자
+- new.target속성을 사용하여 new와 함께 호출했는지 확인 가능
+```
+function User(name) {
+  console.log(new.target);
+  this.name = name;
+}
+// new를 안썼으니 undefined 뜸
+let result_1 = User("join");
+console.log(result_1);
+// new를 썼으니 정보가 뜸
+let result_2 = new User("join");
+console.log(result_2);
+// new가 없으니 생성해라, new.target이 없을 때 new 키워드 추가하여 호출되도록 처리
+function User(name) {
+  if(!new.target) {
+    return new User(name);
+  }
+  this.name = name;
+}
+```
+
+## Collection
+- 구조 혹은 비구조화 형태로 프로그래밍 언어가 제공하는 값을 담을 수 있는 공간
+- 자바스크립트에서 제공하는 Collection - iterator속성 가지고 있음
+  - Indexed Collection - Array, Typed Array
+  - keted Collection - Object, Map, Set, WeakMap, WeakSet
+
+### Map
+- 다양한 자료형의 key를 허용하고, key-value형태의 자료형을 저장 가능하게 하는 Collection
+- Map은 Object대비 비교하면 다양한 key사용을 허용, 값의 추가/삭제 시 메서드를 통해 수행이 필요함
+
+<b>요소 추가/삭제</b>
+- 추가: Map.set(key, value)
+- 접근: Map.get(key)
+- 전체 삭제: Map.clear()
+- 다양한 자료형을 key로 사용 가능하며, map.set호출 시 map이 반환되므로 chaining 가능
+
+```
+let map = new Map();
+map.set("name","john");
+map.set(123, 456);
+map.set(true, "bool_type");
+
+map // Map(3) {'name'=>'john', 123 =>456, true=>'bool_type'}
+map.get(123) // 456
+map.get("name") // john
+map.size // 3
+
+map.clear() // Map(0) {}
+map.set("name","alice").set(123, 789).set(false, 'bool_type');
+map // Map(3) {'name'=>'john', 123 =>789, true=>'bool_type'}
+```
+<b>반복문</b>
+- Collection 객체인 Map이 가지고 있는 iterator 속성을 이용하여 for ...of 구문을 통해 반복문 수행 가능
+
+```
+let recipe_juice = new Map([
+  ["strawberry", 50],
+  ["banana", 100],
+  ["ice", 150],
+])
+
+for (let item of recipe_juice.keys()) console.log(item); // strawberry,banana,ice
+for (let amount of recipe_juice.values()) console.log(amount); // 50 100 150
+for (let entity of recipe_juice) console.log(entity); // ["strawberry", 50]
+  ["banana", 100]
+  ["ice", 150]
+```
+<b>Map<->Object변환</b>
+- Object.entries(Object), Object.fromEntries(Map)를 통해 Map과 Object간 변환이 가능
+
+```
+let recipe_juice_obj = Object.fromEntries(recipe_juice); // { strawberry: 50, banana: 100, ice: 150 }
+let recipe_juice_kv = Object.entries(recipe_juice_obj); // [ [ 'strawberry', 50 ], [ 'banana', 100 ], [ 'ice', 150 ] ]
+let recipe_juice_map = new Map(recipe_juice_kv); // Map(3) { 'strawberry' => 50, 'banana' => 100, 'ice' => 150 }
+```
+
+### Set
+- value만을 저장하며 중복을 허용하지 않는 Collection
+<b>요소 추가/삭제</b>
+- 추가: Set.add(value)
+- 존재 여부: Set.has(value)
+- 삭제: Set.delete(value)
+  
+```
+let set = new Set(); // Set(0) {}
+let num = new Set([1, 2, 3, 4, 5]); // Set(5) { 1, 2, 3, 4, 5 }
+let str = new Set('Hello!'); // Set(5) { 'H', 'e', 'l', 'o', '!' }
+
+set.add(1).add(2).add(3); // Set(3) {1, 2, 3}
+set.has(10) // false
+set.has(2) // true
+set.delete(1);
+set.delete(-1); // Set(2) {2, 3}
+```
+<b>반복문</b>
+- Collection 객체인 Set이 가지고 있는 iterator 속성을 이용하여 for ...of 구문을 통해 반복문 수행 가능
+
+```
+let str = new Set("Hello!"); // Set(5) {'H','e','l','o','!'}
+for (let item of str) console.log(item); // H e l o !
+for (let item of str.keys()) console.log(item); // H e l o !
+for (let item of str.values()) console.log(item); // H e l o !
+for (let item of str.entires()) console.log(item); // [ 'H', 'H' ]
+[ 'e', 'e' ]
+[ 'l', 'l' ]
+[ 'o', 'o' ]
+[ '!', '!' ] // [value, value] <-- Map과의 호환성을 위해 존재
+```
+
+## Math
+- 표준 Built-in 객체, 수학적이 연산을 위한 속성값과 메서드를 제공하는 객체
+- Math는 생성자 함수가 아니며, 모든 속성과 메서드는 정적이기에 Math.function()으로 언제든 호출 가능
+
+### 최대/최소/절댓값
+- Math.max(...x), Math.min(...x), Math.abs(x)
+
+```
+let nums = [1, -1, 5, 23, 17, -4];
+//use apply
+Math.max.apply(null, nums)
+//use spread
+Math.max(...nums)
+```
+
+### 속성 및 랜덤
+- 0과 1 사이의 난수 랜덤 값: Math.random()
+
+### 제곱/제곱근/소수점처리
+- 제곱: Math.pow(x, y)
+- 제곱근: Math.sqrt(x)
+- 소수점 이하 반올림 정수: Math.round(x)
+- 소수점 이하 올림: Math.ceil(x)
+- 소수점 이해 내림: Math.floor(x)
+
+## Date
+- 표준 Built-in 객체, 날짜와 시간을 위한 속성값과 메서드를 제공하는 객체
+- Date객체는 1970년 1월 1일 UTC(협정 세계시) 자정과의 시간 차이를 밀리초로 나타내는 정수 값으로 표현
+
+### 생성자
+```
+let date_now = new Date(); // 2021-09-29T13:48:36.929Z
+// new 안쓰면 문자열 형태
+let date_now_str = Date(); // Wed Sep 29 2021 22:48:36 GMT+0900 (대한민국 표준시)
+
+// default값
+let date_ms_1 = new Date(0); // 1970-01-01T00:00:00.000Z
+// 하루 뒤
+let date_ms_2 = new Date(24*3600*1000); // 1970-01-02T00:00:00.000Z
+
+// string data로 변환
+let date_str = new Date("2021-01-01"); // 2021-01-01T00:00:00.000Z
+
+// month는 1월(0) 12월(11)
+let date_params_1 = new Date(2021,0,1); // 2020-12-31T15:00:00.000Z (UCT때문에 잘못 나옴)
+// UTC 보정
+let date_params_2 = new Date(Date.UTC(2021, 0, 1, 6, 12, 18, 24)); // 2021-01-01T06:12:18.024Z
+let date_params_3 = new Date(Date.UTC(2021,0,1)); // 2021-01-01T00:00:00.000Z
+```
+
+### 날짜
+- 년/월/일/요일: Date.getFullYear(), Date.getMonth(), Date.getDate(), Date.getDay()
+  - 일요일(0) - 토요일(6)
+- 시/분/초/ms: Date.getHours(),getUTCHours(), Date.getMinutes(), Date.getSeconds()
+- 현재 시간을 ms로 변환: Date.getTime()
+- UTC 0 기준으로 얼마만큼 차이가 있는지 분단위: Date.getTimezoneOffset()
+
+<b>날짜 정보 설정</b>
+- 년/월/일: Date.setFullYear(), Date.setMonth(), Date.setDate()
+- 시/분/초/ms: Date.setHours(), Date.setMinutes(), Date.setSeconds()
+```
+setDate(0) // 이전 달의 마지막날
+```
+
+### parse
+- 날짜 정보 설정(문자열 기반): Date.parse(YYYY-MM-DDTHH:mm:ss.sssZ)
+- 날짜, 구분기호T, 시분초밀리초
+- 'Z'(option)-> 미 설정할 경우 현재 로컬 기준 UTC로, 설정할 경우 UTC+0기준으로 설정
+
+### benchmark
+- 성능 측정
+  - 벤치마크 측정대상 함수 전후로 시간을 비교하여 알고리즘 성능 측정
