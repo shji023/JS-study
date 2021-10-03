@@ -875,6 +875,48 @@ result	value	index
 call_count // 4
 sum // 15
 ```
+### some()
+- 배열 내 단 하나라도 콜백 함수의 조건을 만족하는 요소가 있다면 true, 아니면 false 반환(빈 배열인 경우 false)
+- Array.some(function(배열 요소, 배열 위치, 배열){})
+
+```
+let users = [
+  { name:'bob',age:15, job:false },
+  { name:'jane',age:25, job:false },
+  { name:'victoria',age:35, job:true },
+]
+let some_job = users.some(function(user)) {
+  return user.job == false;
+}
+some_job // true
+
+let some_age = users.some(function(user)) {
+  return user.age < 14;
+}
+some_job // false
+
+let empty = [].some((item) => item > 16);
+empty // false
+```
+
+### every()
+- 배열 내 모든 요소가 콜백 함수의 조건을 만족한다면 true, 아니면 false 반환(빈 배열인 경우 true)
+- Array.every(function(배열 요소, 배열 위치, 배열){})
+```
+let every_job = users.every(function(user)) {
+  return user.job == false;
+}
+every_job // false
+
+let every_age = users.every(function(user)) {
+  return user.age > 14;
+}
+some_job // true
+
+let empty = [].some((item) => item > 16);
+empty // true
+
+```
 
 ## 생성자
 - 유사한 객체를 다중으로 만들 때 사용되는 함수(타 언어에서 class라고 보면됨)
