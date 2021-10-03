@@ -21,6 +21,7 @@ p2.isAdult() // false
 ```
 
 ## 연결리스트
+![link](https://user-images.githubusercontent.com/60960130/135757988-e07a3070-bf52-46f1-abc2-b89ffb00c835.png)
 - 각 노드가 데이터와 포인터를 가지며, <b>한 줄</b>로 연결되어 있는 방식으로 데이터를 저장하는 자료구조
 ```
 // Node() 생성자: data와 poing를 가지고 있는 객체
