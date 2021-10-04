@@ -17,7 +17,7 @@
 
 <b>빅오 표기법 예제</b>
 
-```
+```js
 function big_o(n) {
   let sum = 0; // 1회
   sum = n*2; // 1회
@@ -64,7 +64,7 @@ n/2+2 ->O(logN)
 - 서로 다른 n개의 원소 중에서 r을 중복 없이 골라 순서에 상관있게 나열하는 경우의 수(nPr) => n!/(n-r)!
 - 3개의 알파벳으로 단어를 만드는 경우의 수
 
-```
+```js
 // for loop
 let input = ["a", "b", "c"];
 let count = 0;
@@ -127,7 +127,7 @@ c a b
 - 서로 다른 n개의 원소 중에서 r을 중복 없이 골라 순서에 상관 없이 나열하는 경우의 수 nCr => n! / (n-r)!r!
 - 4개의 숫자 카드에서 2개를 뽑는 경우의 수 
 
-```
+```js
 let input = [1, 2, 3, 4];
 let count = 0;
 function combination(arr) {
@@ -188,7 +188,7 @@ console.log(count);
   - 피보나치 수열: F(n) = F(n-1) + F(n-2)
 
 ### 등차 수열
-```
+```js
 // for loop
 let result;
 
@@ -238,7 +238,7 @@ number: 1: 1 + 2
 
 ### 등비 수열
 
-```
+```js
 // for loop
 let result;
 
@@ -280,7 +280,7 @@ console.log(result); // 48
 ```
 
 ### 팩토리얼
-```
+```js
 let result;
 
 function recursive(number) {
@@ -295,7 +295,7 @@ console.log(result); // 120
 
 ### 피보나치 수열
 
-```
+```js
 let result;
 
 function recursive(number) {

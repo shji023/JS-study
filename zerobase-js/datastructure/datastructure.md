@@ -2,7 +2,7 @@
 - 어떠한 객체가 만들어지기 위해 객체의 모태가 되는 원형
 - 자바스크립트는 일반적이 객체 지향 언어와는 다르게, 프로토타입을 이용한 cloning을 통해 새로운 객체 생성
 - 일반적인 객체 생성 방식: 속성은 생성자, 메서도는 프로토타입에서 정의
-```
+```js
 //생성자 
 fuction Person(name, age) {
   this.name = name;
@@ -23,7 +23,7 @@ p2.isAdult() // false
 ## 연결리스트
 ![link](https://user-images.githubusercontent.com/60960130/135757988-e07a3070-bf52-46f1-abc2-b89ffb00c835.png)
 - 각 노드가 데이터와 포인터를 가지며, <b>한 줄</b>로 연결되어 있는 방식으로 데이터를 저장하는 자료구조
-```
+```js
 // Node() 생성자: data와 poing를 가지고 있는 객체
 function Node(data) {
   this.data = data;
@@ -64,7 +64,7 @@ LinkedList {
 }
 */
 ```
-```
+```js
 // 노드 출력 코드
 LinkedList.prototype.printNode = function () {
   //헤드를 첫번째로 세팅 다음 노드 다음 노드..
@@ -103,7 +103,7 @@ LinkedList { head: null, length: 0 }
 3
 */
 ```
-```
+```js
 LinkedList.prototype.insert = function (value, position = 0) {
   if (position < 0 || position > this.length) {
     return false;
