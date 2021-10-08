@@ -156,7 +156,7 @@ queue.size(); // 0
 ```
 
 ## 큐 최적화
-- 방식 개선: enqueue/dequeue 방식을 push/shift에서 index로 변경 (shift는 O(n)이고 index는 O(1)이기 떄문)
+- 방식 개선: enqueue/dequeue 방식을 push/shift에서 index로 변경 (shift는 O(n)이고 index는 O(1)이기 때문)
 ```js
 function Queue(array) {
   this.array = array ? array : [];

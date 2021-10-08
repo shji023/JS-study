@@ -153,4 +153,6 @@ Bob
 */
 ```
 
-## 
+## 원형 큐(Circular Queue)
+- 원형 형태를 가지며, 먼저 넣은 데이터가 먼저 나오는 FIFO기반의 선형 자료구조
+![cq](https://user-images.githubusercontent.com/60960130/136589884-92903b34-8a2e-4fed-900c-423a6d9b85b3.png)
