@@ -1,6 +1,6 @@
-for (let i = 0; i < input.length; i++) {
-  console.log(`#${i + 1} ${answer(input[i])}`);
-}
+// for (let i = 0; i < input.length; i++) {
+//   console.log(`#${i + 1} ${answer(input[i])}`);
+// }
 
 // for (let i = 0; i < input.length; i++) {
 //   process.stdout.write(`#${i + 1} `);

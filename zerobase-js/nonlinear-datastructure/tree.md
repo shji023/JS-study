@@ -147,3 +147,279 @@ R(Right): 오른쪽 서브 트리로 이동
 ### 이진 트리 순회 (Binary Tree Traversal)
 - 각각의 노드가 최대 두개의 자식 노드를 가지는 트리 자료 구조를 순회하는 방법
 
+```js
+// value, left, right node저장 위한 생성자
+function Node(value) {
+  this.value = value;
+  this.left = null;
+  this.right = null;
+}
+//root 저장 위한 생성자
+function BinaryTree() {
+  this.root = null;
+}
+// 재귀로 트리를 순회하며 노드 추가 (내부 사용)
+// _는 private의 의미
+BinaryTree.prototype._insertNode = function (node, value) {
+  if (node === null) {
+    node = new Node(value);
+  } else if (value < node.value) {
+    node.left = this._insertNode(node.left, value);
+  } else if (value >= node.value) {
+    node.right = this._insertNode(node.right, value);
+  }
+
+  return node;
+};
+// 노출시킴
+BinaryTree.prototype.insert = function (value) {
+  this.root = this._insertNode(this.root, value);
+};
+// 알파벳 작은거는 왼쪽 큰거는 오른쪽
+let tree = new BinaryTree();
+
+tree.insert("F");
+/*
+this.root = null -> F
+*/
+tree.insert("B");
+/*
+this.root -> F
+  F.left = B
+*/
+tree.insert("A");
+/*
+this.root -> F
+  F.left = B
+  B.left = A
+*/
+tree.insert("D");
+/*
+this.root -> F
+  F.left = B
+  B.left = A
+  B.right = D
+*/
+tree.insert("C");
+tree.insert("E");
+tree.insert("G");
+tree.insert("I");
+tree.insert("H");
+
+console.log(tree);
+// BinaryTree {
+//   root: Node {
+//     value: 'F',
+//     left: Node { value: 'B', left: [Node], right: [Node] },
+//     right: Node { value: 'G', left: null, right: [Node] }
+//   }
+// }
+```
+- 전위 순회
+```js
+// 재귀로 트리를 순회하며 전위 순회(내부 사용)
+BinaryTree.prototype._preOrderTraverseNode = function (node, callback) {
+  if (node === null) {
+    return;
+  }
+  callback(node); //콜백이 앞에 있음 - 전위
+  this._preOrderTraverseNode(node.left, callback);
+  this._preOrderTraverseNode(node.right, callback);
+};
+// 전위 순회 하며 노드 출력
+BinaryTree.prototype.preOrderTraverse = function (callback) {
+  this._preOrderTraverseNode(this.root, callback);
+};
+
+let tree = new BinaryTree();
+
+tree.insert("F");
+tree.insert("B");
+tree.insert("A");
+tree.insert("D");
+tree.insert("C");
+tree.insert("E");
+tree.insert("G");
+tree.insert("I");
+tree.insert("H");
+
+console.log(tree);
+
+function printNode(node) {
+  process.stdout.write(`${node.value} -> `);
+}
+
+console.log("********* Pre-Order *********");
+tree.preOrderTraverse(printNode);
+console.log("end");
+/*
+BinaryTree {
+  root: Node {
+    value: 'F',
+    left: Node { value: 'B', left: [Node], right: [Node] },
+    right: Node { value: 'G', left: null, right: [Node] }
+  }
+}
+********* Pre-Order ***********
+F -> B -> A -> D -> C -> E -> G -> I -> H -> end
+*/
+```
+- 중위 순회
+```js
+//재귀로 트리를 순회하며 중위 순회(내부 사용)
+BinaryTree.prototype._inOrderTraverseNode = function (node, callback) {
+  if (node === null) {
+    return;
+  }
+  this._inOrderTraverseNode(node.left, callback);
+  callback(node); // 콜백이 가운데 있음 - 중위
+  this._inOrderTraverseNode(node.right, callback);
+};
+// 중위 순회 하며 노드 출력
+BinaryTree.prototype.inOrderTraverse = function (callback) {
+  this._inOrderTraverseNode(this.root, callback);
+};
+
+let tree = new BinaryTree();
+
+tree.insert("F");
+tree.insert("B");
+tree.insert("A");
+tree.insert("D");
+tree.insert("C");
+tree.insert("E");
+tree.insert("G");
+tree.insert("I");
+tree.insert("H");
+
+console.log(tree);
+
+function printNode(node) {
+  process.stdout.write(`${node.value} -> `);
+}
+
+console.log("********* In-Order *********");
+tree.inOrderTraverse(printNode);
+console.log("end");
+/*
+BinaryTree {
+  root: Node {
+    value: 'F',
+    left: Node { value: 'B', left: [Node], right: [Node] },
+    right: Node { value: 'G', left: null, right: [Node] }
+  }
+}
+********* In-Order *********
+A -> B -> C -> D -> E -> F -> G -> H -> I -> end
+*/
+```
+- 후위 순회
+```js
+//재귀로 트리를 순회하며 후위 순회(내부 사용)
+BinaryTree.prototype._postOrderTraverse = function (node, callback) {
+  if (node === null) {
+    return;
+  }
+  this._postOrderTraverse(node.left, callback);
+  this._postOrderTraverse(node.right, callback);
+  callback(node); // 콜백이 끝에 있음 - 후위
+};
+// 후위 순회 하며 노드 출력
+BinaryTree.prototype.postOrderTraverse = function (callback) {
+  this._postOrderTraverse(this.root, callback);
+};
+
+let tree = new BinaryTree();
+
+tree.insert("F");
+tree.insert("B");
+tree.insert("A");
+tree.insert("D");
+tree.insert("C");
+tree.insert("E");
+tree.insert("G");
+tree.insert("I");
+tree.insert("H");
+
+console.log(tree);
+
+function printNode(node) {
+  process.stdout.write(`${node.value} -> `);
+}
+
+console.log("********* Post-Order *********");
+tree.postOrderTraverse(printNode);
+console.log("end");
+/*
+BinaryTree {
+  root: Node {
+    value: 'F',
+    left: Node { value: 'B', left: [Node], right: [Node] },
+    right: Node { value: 'G', left: null, right: [Node] }
+  }
+}
+********* Post-Order *********
+A -> C -> E -> D -> B -> H -> I -> G -> F -> end
+*/
+```
+- 층별 순회
+```js
+function Queue(array) {
+  this.array = array ? array : [];
+}
+Queue.prototype.isEmpty = function () {
+  return this.array.length == 0;
+};
+Queue.prototype.enqueue = function (element) {
+  return this.array.push(element);
+};
+Queue.prototype.dequeue = function () {
+  return this.array.shift();
+};
+// 층별 순회 하며 노드 출력
+BinaryTree.prototype.levelOrderTraverse = function (callback) {
+  let q = new Queue();
+  let node;
+  q.enqueue(this.root); // 루트 넣어줌
+  while (!q.isEmpty()) {
+    node = q.dequeue();
+    callback(node);
+    if (node.left !== null) q.enqueue(node.left);
+    if (node.right !== null) q.enqueue(node.right);
+  }
+};
+
+let tree = new BinaryTree();
+
+tree.insert("F");
+tree.insert("B");
+tree.insert("A");
+tree.insert("D");
+tree.insert("C");
+tree.insert("E");
+tree.insert("G");
+tree.insert("I");
+tree.insert("H");
+
+console.log(tree);
+
+function printNode(node) {
+  process.stdout.write(`${node.value} -> `);
+}
+
+console.log("********* Level-Order *********");
+tree.levelOrderTraverse(printNode);
+console.log("end");
+/*
+BinaryTree {
+  root: Node {
+    value: 'F',
+    left: Node { value: 'B', left: [Node], right: [Node] },
+    right: Node { value: 'G', left: null, right: [Node] }
+  }
+}
+********* Level-Order ***********
+F -> B -> G -> A -> D -> I -> C -> E -> H -> end
+
+*/
+```
