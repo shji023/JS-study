@@ -419,25 +419,24 @@ LinearHashTable.prototype.put = function (key, value) {
   console.log(`key: ${key} -> index: ${index}`);
 
   do {
-    if (this.table[index] === undefined) {
+    if (this.table[index] === undefined) { // 비어있으면 넣고 비어있지 않으면 next index
       this.table[index] = new Element(key, value);
       this.length++;
       return true;
     }
-    index = (index + 1) % HASH_SIZE;
-  } while (index !== startIndex);
+    index = (index + 1) % HASH_SIZE; // 뒤에 자리 없으면 다시 앞에 넣어야하니까 % 연산 필요
+  } while (index !== startIndex); // break조건
   return false;
 };
 
 let lht = new LinearHashTable();
 
 lht.put("Ana", 172);
+lht.put("John", 179);
 lht.put("Donnie", 183);
-lht.put("Sue", 163);
-lht.put("Jamie", 168);
-lht.put("Paul", 190);
+lht.put("Mindy", 190);
 console.log(lht.put("Paul", 168));
-console.log(lht.put("Paul", 168));
+console.log(lht.put("Sue", 163)); // Sue는 들어갈 자리 없음
 console.log("");
 
 lht.print();
@@ -448,37 +447,426 @@ lht.clear();
 console.log(lht);
 /*
 key: Ana -> index: 2
+key: John -> index: 4
 key: Donnie -> index: 0
+key: Mindy -> index: 3
+key: Paul -> index: 2
+true
 key: Sue -> index: 1
-key: Jamie -> index: 1
-key: Paul -> index: 2
-key: Paul -> index: 2
-false
-key: Paul -> index: 2
 false
 
 0->Donnie: 183
-1->Sue: 163
+1->Paul: 168
 2->Ana: 172
-3->Jamie: 168
-4->Paul: 190
+3->Mindy: 190
+4->John: 179
 [
   Element { key: 'Donnie', value: 183 },
-  Element { key: 'Sue', value: 163 },
+  Element { key: 'Paul', value: 168 },
   Element { key: 'Ana', value: 172 },
-  Element { key: 'Jamie', value: 168 },
-  Element { key: 'Paul', value: 190 }
+  Element { key: 'Mindy', value: 190 },
+  Element { key: 'John', value: 179 }
 ]
 LinearHashTable {
   table: [
     Element { key: 'Donnie', value: 183 },
-    Element { key: 'Sue', value: 163 },
+    Element { key: 'Paul', value: 168 },
     Element { key: 'Ana', value: 172 },
-    Element { key: 'Jamie', value: 168 },
-    Element { key: 'Paul', value: 190 }
+    Element { key: 'Mindy', value: 190 },
+    Element { key: 'John', value: 179 }
   ],
   length: 5
 }
 LinearHashTable { table: [ <5 empty items> ], length: 0 }
+*/
+```
+
+```js
+LinearHashTable.prototype.get = function (key) {
+  let index = this.hashCode(key);
+  let startIndex = index;
+  // 값이 있다면 key와 같은지 한번더 비교하고 없다면 다음 다음 끝까지 없으면 undefined
+  do {
+    if (this.table[index] !== undefined && this.table[index].key === key) {
+      return this.table[index].value;
+    }
+    index = (index + 1) % HASH_SIZE;
+  } while (index !== startIndex);
+  return undefined;
+};
+let lht = new LinearHashTable();
+
+lht.put("Ana", 172);
+lht.put("John", 179);
+lht.put("Donnie", 183);
+lht.put("Mindy", 190);
+lht.put("Paul", 168);
+console.log("");
+
+console.log(lht.get("Ana"));
+console.log(lht.get("Paul"));
+console.log(lht.get("Kim"));
+/*
+key: Ana -> index: 2
+key: John -> index: 4
+key: Donnie -> index: 0
+key: Mindy -> index: 3
+key: Paul -> index: 2
+
+172
+168
+undefined
+*/
+```
+
+```js
+// remove도 get과 비슷
+// 값이 있다면 key와 같은지 한번더 비교하고 없다면 다음 다음 끝까지 없으면 undefined
+LinearHashTable.prototype.remove = function (key) {
+  let index = this.hashCode(key);
+  let startIndex = index;
+
+  do {
+    if (this.table[index] !== undefined && this.table[index].key == key) {
+      let element = this.table[index];
+      delete this.table[index];
+      this.length--;
+
+      return element;
+    }
+    index = (index + 1) % HASH_SIZE;
+  } while (index !== startIndex);
+
+  return undefined;
+};
+let lht = new LinearHashTable();
+
+lht.put("Ana", 172);
+lht.put("John", 179);
+lht.put("Donnie", 183);
+lht.put("Mindy", 190);
+lht.put("Paul", 168);
+console.log("");
+
+console.log(lht.remove("Ana"));
+console.log(lht.get("Paul"));
+console.log(lht.remove("Paul"));
+console.log(lht.get("Paul"));
+console.log(lht.remove("Paul"));
+console.log(lht.size());
+
+lht.print();
+console.log(lht);
+/*
+key: Ana -> index: 2
+key: John -> index: 4
+key: Donnie -> index: 0
+key: Mindy -> index: 3
+key: Paul -> index: 2
+
+Element { key: 'Ana', value: 172 }
+168
+Element { key: 'Paul', value: 168 }
+undefined
+undefined
+3
+0->Donnie: 183
+3->Mindy: 190
+4->John: 179
+LinearHashTable {
+  table: [
+    Element { key: 'Donnie', value: 183 },
+    <2 empty items>,
+    Element { key: 'Mindy', value: 190 },
+    Element { key: 'John', value: 179 }
+  ],
+  length: 3
+}
+*/
+```
+
+## 체이닝 해시테이블 (Chaining Hash Table)
+- 별도의 자료구조인 연결 리스트를 병합 사용하여 Hash 충돌을 해결한 해시테이블 기반 자료구조
+![cht](https://user-images.githubusercontent.com/60960130/136778892-caeed5db-36fb-4106-a929-680bf3e54cdc.png)
+
+```js
+import { LinkedList } from "./linked_list.mjs";
+const HASH_SIZE = 37;
+// Key, value 저장을 위한 생성자
+function Element(key, value) {
+  this.key = key;
+  this.value = value;
+}
+
+// 생성자
+function ChainingHashTable() {
+  this.table = new Array(HASH_SIZE);
+  this.length = 0;
+}
+
+// 해시 함수
+ChainingHashTable.prototype.hashCode = function (key) {
+  let hash = 0;
+  for (let i = 0; i < key.length; i++) {
+    hash += key.charCodeAt(i);
+  }
+  return hash % HASH_SIZE;
+};
+
+// 초기화
+ChainingHashTable.prototype.clear = function () {
+  this.table = new Array(HASH_SIZE);
+  this.length = 0;
+};
+
+// 크기 반환
+ChainingHashTable.prototype.size = function () {
+  return this.length;
+};
+
+let cht = new ChainingHashTable();
+console.log(cht);
+
+let ll = new LinkedList();
+ll.append(new Element("Ana", 172));
+console.log(ll);
+
+/*
+ChainingHashTable { table: [ <37 empty items> ], length: 0 }
+LinkedList {
+  head: Node { data: Element { key: 'Ana', value: 172 }, next: null },
+  length: 1
+}
+*/
+```
+
+```js
+// 데이터 추가
+// 1. 배열 내 값 존재 여부 확인. 없다면 제작, 있다면 append
+ChainingHashTable.prototype.put = function (key, value) {
+  let index = this.hashCode(key);
+  console.log(`key: ${key} -> index: ${index}`);
+  if (this.table[index] === undefined) {
+    this.table[index] = new LinkedList(); // table에 Linkedlist객체 저장
+  }
+  this.table[index].append(new Element(key, value));
+  this.length++;
+  return true;
+};
+
+let cht = new ChainingHashTable();
+
+cht.put("Ana", 172);
+cht.put("Donnie", 183);
+cht.put("Sue", 163);
+cht.put("Jamie", 168);
+cht.put("Paul", 190);
+console.log(cht);
+/*
+key: Ana -> index: 13
+key: Donnie -> index: 13
+key: Sue -> index: 5
+key: Jamie -> index: 5
+key: Paul -> index: 32
+ChainingHashTable {
+  table: [
+    <5 empty items>,
+    LinkedList { head: [Node], length: 2 },
+    <7 empty items>,
+    LinkedList { head: [Node], length: 2 },
+    <18 empty items>,
+    LinkedList { head: [Node], length: 1 },
+    <4 empty items>
+  ],
+  length: 5
+}
+*/
+```
+
+```js
+// 데이터 셋 반환
+ChainingHashTable.prototype.getBuffer = function () {
+  let array = [];
+  for (let i = 0; i < this.table.length; i++) {
+    if (this.table[i]) {
+      let current = this.table[i].head;
+      do { // 무조건 값이 있다고 판단
+        array.push(current.data);
+        current = current.next;
+      } while (current);
+    }
+  }
+  return array;
+};
+
+// 데이터 셋 출력
+ChainingHashTable.prototype.print = function () {
+  for (let i = 0; i < this.table.length; i++) {
+    if (this.table[i]) {
+      let current = this.table[i].head;
+      process.stdout.write(`#${i}`);
+      do {
+        process.stdout.write(` -> ${current.data.key}: ${current.data.value}`);
+        current = current.next;
+      } while (current);
+      console.log("");
+    }
+  }
+};
+
+let cht = new ChainingHashTable();
+
+cht.put("Ana", 172);
+cht.put("Donnie", 183); // 충돌
+cht.put("Sue", 163);
+cht.put("Jamie", 168); // 충돌
+cht.put("Paul", 190);
+console.log(cht);
+
+cht.print();
+console.log(cht.getBuffer());
+/*
+key: Ana -> index: 13
+key: Donnie -> index: 13
+key: Sue -> index: 5
+key: Jamie -> index: 5
+key: Paul -> index: 32
+ChainingHashTable {
+  table: [
+    <5 empty items>,
+    LinkedList { head: [Node], length: 2 },
+    <7 empty items>,
+    LinkedList { head: [Node], length: 2 },
+    <18 empty items>,
+    LinkedList { head: [Node], length: 1 },
+    <4 empty items>
+  ],
+  length: 5
+}
+#5 -> Sue: 163 -> Jamie: 168
+#13 -> Ana: 172 -> Donnie: 183
+#32 -> Paul: 190
+[
+  Element { key: 'Sue', value: 163 },
+  Element { key: 'Jamie', value: 168 },
+  Element { key: 'Ana', value: 172 },
+  Element { key: 'Donnie', value: 183 },
+  Element { key: 'Paul', value: 190 }
+]
+*/
+```
+
+```js
+// 데이터 조회
+ChainingHashTable.prototype.get = function (key) {
+  let index = this.hashCode(key);
+  if (this.table[index] !== undefined && !this.table[index].isEmpty()) {
+    let current = this.table[index].head;
+    do {
+      if (current.data.key === key) {
+        return current.data.value;
+      }
+      current = current.next;
+    } while (current);
+  }
+  return undefined;
+};
+
+let cht = new ChainingHashTable();
+
+cht.put("Ana", 172);
+cht.put("Donnie", 183);
+cht.put("Sue", 163);
+cht.put("Jamie", 168);
+cht.put("Paul", 190);
+
+console.log(cht.get("Ana"));
+console.log(cht.get("Donnie"));
+console.log(cht.get("Kim"));
+/*
+key: Ana -> index: 13
+key: Donnie -> index: 13
+key: Sue -> index: 5
+key: Jamie -> index: 5
+key: Paul -> index: 32
+172
+183
+undefined
+*/
+```
+
+```js
+//  데이터 삭제
+// 인덱스에 요소가 있는지 체크, 동일한 key인지 체크 -> remove. isEmpty확인
+ChainingHashTable.prototype.remove = function (key) {
+  let index = this.hashCode(key);
+  let element = undefined;
+  if (this.table[index] !== undefined) {
+    let current = this.table[index].head;
+    do {
+      if (current.data.key === key) {
+        element = current.data;
+        this.table[index].remove(current.data);
+        this.length--;
+        if (this.table[index].isEmpty()) {
+          delete this.table[index];
+        }
+      }
+      current = current.next;
+    } while (current);
+  }
+
+  return element;
+};
+
+let cht = new ChainingHashTable();
+
+cht.put("Ana", 172);
+cht.put("Donnie", 183);
+cht.put("Sue", 163);
+cht.put("Jamie", 168);
+cht.put("Paul", 190);
+
+console.log("");
+cht.print();
+
+console.log(cht.remove("Sue"));
+console.log("");
+cht.print();
+
+console.log(cht.remove("Jamie"));
+console.log("");
+cht.print();
+
+console.log(cht);
+/*
+key: Ana -> index: 13
+key: Donnie -> index: 13
+key: Sue -> index: 5
+key: Jamie -> index: 5
+key: Paul -> index: 32
+
+#5 -> Sue: 163 -> Jamie: 168
+#13 -> Ana: 172 -> Donnie: 183
+#32 -> Paul: 190
+Element { key: 'Sue', value: 163 }
+
+#5 -> Jamie: 168
+#13 -> Ana: 172 -> Donnie: 183
+#32 -> Paul: 190
+Element { key: 'Jamie', value: 168 }
+
+#13 -> Ana: 172 -> Donnie: 183
+#32 -> Paul: 190
+ChainingHashTable {
+  table: [
+    <13 empty items>,
+    LinkedList { head: [Node], length: 2 },
+    <18 empty items>,
+    LinkedList { head: [Node], length: 1 },
+    <4 empty items>
+  ],
+  length: 3
+}
 */
 ```

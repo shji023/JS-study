@@ -146,7 +146,7 @@ console.log(ll.size());
 ```
 ```js
 LinkedList.prototype.remove = function (value) {
-  let current = this.head; // current는 항상 최초의 노드
+  let current = this.head, // current는 항상 최초의 노드
   prev = current;
 
   while (current.data != value && current.next != null) {
