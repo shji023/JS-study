@@ -1,3 +1,10 @@
+## DFS(Depth First Search)
+- 트리나 그래프 등에서 하나의 노드를 최대한 깊게 들어가면서 해를 찾는 탐색 기법
+- 장점: 인접한 후보 노드만 기억하면 되므로 적은 기억 공간 소요, 노드가 깊은 단계에 있을 경우 빠르게 정답 산출
+- 단점: 선택한 경로가 답이 아닐 경우 불필요한 탐색 가능, 최단 경로를 구할 시 찾은 해가 정답이 아닐 경우 발생
+- 재귀와 스택 사용
+
+```js
 function Graph() {
   this.edge = {};
   this.visited = {};
@@ -65,25 +72,27 @@ graph.print();
 console.log("");
 
 graph.dfs("A");
-
 /*
-// for (let i = 0; i < input.length; i++) {
-//   console.log(`#${i + 1} ${answer(input[i])}`);
-// }
+A -> B C D 
+B -> E F 
+C -> G 
+D -> G H 
+E -> I 
 
-// for (let i = 0; i < input.length; i++) {
-//   process.stdout.write(`#${i + 1} `);
-//   console.log(answer(input[i][0], input[i][1]));
-// }
-
-// for (let i = 0; i < input.length; i++) {
-//   process.stdout.write(`#${i + 1} `);
-//   console.log(answer(input[i][0], input[i][1], input[i][2]));
-// }
-
-/*
-for (let i = 0; i < input.length; i++) {
-  process.stdout.write(`#${i + 1} `);
-  console.log(answer(input[i][0], input[i][1], input[i][2], input[i][3]));
-}
+visit "A"
+visit "B"
+visit "E"
+visit "I"
+visit "F"
+visit "C"
+visit "G"
+visit "D"
+visit "H"
 */
+```
+
+```js
+```
+
+```js
+```

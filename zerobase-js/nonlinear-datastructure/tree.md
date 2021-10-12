@@ -591,3 +591,99 @@ Not found J
 Found I
 */
 ```
+
+```js
+// 반복문으로 트리를 순회하며 최솟값을 보유한 노드 탐색
+BinarySearchTree.prototype._findMinNode = function (node) {
+  while (node && node.left !== null) node = node.left;
+
+  return node;
+};
+// 재귀로 트리를 순회하며 값을 만족하는 노드를 찾고 삭제
+BinarySearchTree.prototype._removeNode = function (node, value) {
+  if (node === null) return null;
+  if (node.value === value) {
+    // case 1: leaf node
+    if (node.left === null && node.right === null) {
+      node = null;
+    }
+    // case 2: 1 child node
+    else if (node.left === null) {
+      node = node.right;
+    } else if (node.right === null) {
+      node = node.left;
+    }
+    // case 3: 2 child node
+    else {
+      let aux = this._findMinNode(node.right);
+      node.value = aux.value;
+      node.right = this._removeNode(node.right, aux.value);
+    }
+  } else if (node.value > value) {
+    node.left = this._removeNode(node.left, value);
+  } else if (node.value < value) {
+    node.right = this._removeNode(node.right, value);
+  }
+  return node;
+};
+
+BinarySearchTree.prototype.remove = function (value) {
+  this.root = this._removeNode(this.root, value);
+};
+
+let tree = new BinarySearchTree();
+
+tree.insert("F");
+tree.insert("B");
+tree.insert("A");
+tree.insert("D");
+tree.insert("C");
+tree.insert("E");
+tree.insert("G");
+tree.insert("I");
+tree.insert("H");
+
+console.log(tree.root);
+
+function printNode(node) {
+  process.stdout.write(`${node.value} -> `);
+}
+
+tree.inOrderTraverse(printNode);
+tree.remove("H");
+tree.inOrderTraverse(printNode);
+tree.remove("D");
+tree.inOrderTraverse(printNode);
+tree.remove("F");
+tree.inOrderTraverse(printNode);
+
+console.log(tree.root);
+/*
+Node {
+  value: 'F',
+  left: Node {
+    value: 'B',
+    left: Node { value: 'A', left: null, right: null },
+    right: Node { value: 'D', left: [Node], right: [Node] }
+  },
+  right: Node {
+    value: 'G',
+    left: null,
+    right: Node { value: 'I', left: [Node], right: null }
+  }
+}
+A -> B -> C -> D -> E -> F -> G -> H -> I -> end
+A -> B -> C -> D -> E -> F -> G -> I -> end
+A -> B -> C -> E -> F -> G -> I -> end
+A -> B -> C -> E -> G -> I -> end
+Node {
+  value: 'G',
+  left: Node {
+    value: 'B',
+    left: Node { value: 'A', left: null, right: null },
+    right: Node { value: 'E', left: [Node], right: null }
+  },
+  right: Node { value: 'I', left: null, right: null }
+}
+*/
+```
