@@ -1,3 +1,13 @@
+## 트라이 (Trie)
+- 탐색 트리의 일종으로, 문자열이나 연관 배열을 저장하는 데 사용되는 트리 자료구조
+- 특징
+  - 문자열 검색에 특화된 자료구조
+  - 문자열 길이가 M일 경우 O(M)의 시간 복잡도로 검색 가능
+![trie](https://user-images.githubusercontent.com/60960130/137150980-590d5db6-e2d1-4ecf-8068-06b7a2d6cfa3.png)
+- 문자의 마지막단어 마킹 필요
+- 문자열 재활용 순서보장
+
+```js
 // 문자값과 단어 여부값 저장을 위한 노드 생성자
 function TrieNode() {
   this.children = {};
@@ -23,6 +33,35 @@ Trie.prototype.insert = function (word) {
   }
   current.endOfWord = true;
 };
+
+let trie = new Trie();
+trie.insert("be");
+trie.insert("bee");
+trie.insert("can");
+trie.insert("cat");
+trie.insert("cd");
+
+console.log(trie.root);
+console.log(trie.root.children["c"]);
+/*
+TrieNode {
+  children: {
+    b: TrieNode { children: [Object], endOfWord: false },
+    c: TrieNode { children: [Object], endOfWord: false }
+  },
+  endOfWord: false
+}
+TrieNode {
+  children: {
+    a: TrieNode { children: [Object], endOfWord: false },
+    d: TrieNode { children: {}, endOfWord: true }
+  },
+  endOfWord: false
+}
+*/
+```
+
+```js
 // 문자열 검색
 Trie.prototype.search = function (word) {
   let current = this.root;
@@ -39,6 +78,19 @@ Trie.prototype.search = function (word) {
   }
   return current.endOfWord;
 };
+
+let trie = new Trie();
+
+trie.insert("be");
+trie.insert("bee");
+trie.insert("can");
+trie.insert("cat");
+trie.insert("cd");
+console.log(trie.search("bear")); //false
+console.log(trie.search("b")); // false
+console.log(trie.search("bee")); // true
+```
+```js
 // 문자열 삭제
 Trie.prototype.delete = function (word, current = this.root, index = 0) {
   if (index === word.length) {
@@ -81,23 +133,21 @@ console.log(trie.root.children);
 console.log(trie.root.children["b"]);
 console.log(trie.root.children["b"].children["e"]);
 /*
-// for (let i = 0; i < input.length; i++) {
-//   console.log(`#${i + 1} ${answer(input[i])}`);
-// }
-
-// for (let i = 0; i < input.length; i++) {
-//   process.stdout.write(`#${i + 1} `);
-//   console.log(answer(input[i][0], input[i][1]));
-// }
-
-// for (let i = 0; i < input.length; i++) {
-//   process.stdout.write(`#${i + 1} `);
-//   console.log(answer(input[i][0], input[i][1], input[i][2]));
-// }
-
-/*
-for (let i = 0; i < input.length; i++) {
-  process.stdout.write(`#${i + 1} `);
-  console.log(answer(input[i][0], input[i][1], input[i][2], input[i][3]));
+true
+true
+true
+false
+{
+  b: TrieNode { children: { e: [TrieNode] }, endOfWord: false },
+  c: TrieNode {
+    children: { a: [TrieNode], d: [TrieNode] },
+    endOfWord: false
+  }
 }
+TrieNode {
+  children: { e: TrieNode { children: {}, endOfWord: true } },
+  endOfWord: false
+}
+TrieNode { children: {}, endOfWord: true }
 */
+```
