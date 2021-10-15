@@ -285,6 +285,7 @@ mergeSort descending
 let quickSort = function (arr, compare, s = 0, e = arr.length - 1) {
   let start = s;
   let pivot = arr[e];
+
   for (let i = s; i <= e; i++) {
     if (compare(pivot, arr[i])) {
       swap(arr, start, i);
@@ -292,17 +293,22 @@ let quickSort = function (arr, compare, s = 0, e = arr.length - 1) {
     }
   }
   swap(arr, start, e);
-  if (start - 1 > s) quickSort(arr, compare, s, start - 1);
-  if (start + 1 < e) quickSort(arr, compare, start + 1, e);
+
+  if (start - 1 > s) 
+    quickSort(arr, compare, s, start - 1);
+  if (start + 1 < e) 
+    quickSort(arr, compare, start + 1, e);
 };
 
 let init_array = [6, 5, 1, 3, 2, 4];
 let array;
+
 let sorting = [quickSort];
 let order = [ascending, descending];
 for (let i = 0; i < sorting.length; i++) {
   for (let j = 0; j < order.length; j++) {
     console.log(sorting[i].name, order[j].name);
+
     array = [...init_array];
     sorting[i](array, order[j]);
     console.log(array);
@@ -314,5 +320,76 @@ quickSort ascending
 quickSort descending
 [ 6, 5, 4, 3, 2, 1 ]
 
+*/
+```
+
+## 성능 측정
+- bubbleSort_1(),bubbleSort_2(),bubbleSort_3() 간 성능 튜닝에 따른 성능 측정 및 비교
+```js
+function benchmark(arr, callback) {
+  let start = Date.now();
+
+  callback(arr);
+  
+  return Date.now() - start;
+}
+
+let init_array = [];
+let max = 30000;
+for (let i = 0; i < max; i++) {
+  init_array.push(Math.round(Math.random() * max));
+}
+
+let array = [...init_array];
+console.log("bubbleSort_1: " + benchmark(array, bubbleSort_1) + "ms"); // bubbleSort_1: 4208ms
+
+array = [...init_array];
+console.log("bubbleSort_2: " + benchmark(array, bubbleSort_2) + "ms"); // bubbleSort_2: 2943ms
+
+array = [...init_array];
+console.log("bubbleSort_3: " + benchmark(array, bubbleSort_3) + "ms"); // bubbleSort_3: 3370ms
+```
+
+```js
+function benchmark(arr, callback, order) {
+  let start = Date.now();
+
+  callback(arr, order);
+
+  return Date.now() - start;
+}
+
+let init_array = [];
+let max = 30000;
+
+for (let i = 0; i < max; i++) {
+  init_array.push(Math.round(Math.random() * max));
+}
+
+let sorting = [bubbleSort, selectionSort, insertionSort, mergeSort, quickSort];
+let order = [ascending, descending];
+let array;
+
+for (let i = 0; i < sorting.length; i++) {
+  for (let j = 0; j < order.length; j++) {
+    array = [...init_array];
+    console.log(
+      sorting[i].name,
+      order[j].name,
+      benchmark(array, sorting[i], order[j]) + "ms"
+    );
+  }
+}
+/*
+bubbleSort ascending 3242ms
+bubbleSort descending 13133ms
+selectionSort ascending 909ms
+selectionSort descending 9748ms
+insertionSort ascending 510ms
+insertionSort descending 3807ms
+mergeSort ascending 65ms
+mergeSort descending 67ms
+quickSort ascending 36ms
+quickSort descending 42ms
 */
 ```
